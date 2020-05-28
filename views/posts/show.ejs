@@ -2,4 +2,15 @@
 <div>Price: $<%= post.price %></div>
 <div><%= post.description %></div>
 <div><%= post.location %></div>
-<div><a href="/posts/<%= post.id %>/edit">Edit post</a></div>
+<div>
+    <a href="/posts/<%= post.id %>/edit">
+        <button> Edit </button>
+    </a>
+</div>
+<div>
+    <!-- ?_method will override POST method here to access the delete route in routes
+         to run the logic to delete the post -->
+    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+        <input type="submit" value="Delete">
+    </form>
+</div>
