@@ -7,8 +7,7 @@ const PostSchema = new Schema({
     description: String,
     images: [ { url: String, public_id: String} ],
     location: String,
-    lat: Number,
-    lng: Number,
+    coordinates: Array,
     // author references objectId of a user
     author: {
         type: Schema.Types.ObjectId,
