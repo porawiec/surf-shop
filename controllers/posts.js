@@ -87,12 +87,24 @@ module.exports = {
                 });
             }
         }
+        // check if location is updated
+        if(req.body.post.location !== post.location) {
+            let response = await geocodingClient
+            .forwardGeocode({
+                // passing in location from form to turn into geocoordinates
+                query: req.body.post.location,
+                limit: 1
+            })
+            .send()
+            post.coordinates = response.body.features[0].geometry.coordinates;
+            post.location = req.body.post.location;
+        }
+
         // update post with properties submitted from the edit form
         // note: this will also update equal values
         post.title = req.body.post.title;
         post.description = req.body.post.description;
         post.price = req.body.post.price;
-        post.location = req.body.post.location;
 
         post.save();
         res.redirect(`/posts/${post.id}`) // could also work with req.params.id
