@@ -48,12 +48,3 @@
     </div>
     <hr>
 <% }); %>
-
-<script>
-    $('.toggle-edit-form').on('click', function () {
-        // toggle edit button text on click
-        $(this).text() === 'Edit' ? $(this).text('Cancel') : $(this).text('Edit');
-        // toggle visibility of this specific edit review form
-        $(this).siblings('.edit-review-form').toggle();
-    })
-</script>
