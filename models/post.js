@@ -9,7 +9,21 @@ const PostSchema = new Schema({
     description: String,
     images: [ { url: String, public_id: String} ],
     location: String,
-    coordinates: Array,
+    // made to fit the geoJSON formatting style
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+    properties: {
+        description: String
+    },
     // author references objectId of a user
     author: {
         type: Schema.Types.ObjectId,
