@@ -1,4 +1,5 @@
 const Review = require('../models/review');
+const User = require('../models/user');
 
 module.exports = {
     // handle promise/async errors
@@ -18,5 +19,13 @@ module.exports = {
         // flash message and redirect to root route
         req.session.error = 'You do not have access to edit this Review.';
         return res.redirect('/');
+    },
+    checkIfUserExists: async (req, res, next) => {
+        let userExists = await User.findOne({'email': req.body.email});
+        if(userExists) {
+            req.session.error = 'A user with the given email is already registered';
+            return res.redirect('back');
+        }
+        next();
     }
 }

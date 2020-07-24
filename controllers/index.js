@@ -25,14 +25,14 @@ module.exports = {
             image: req.body.image
         });
 
-        let user = await User.register(newUser, req.body.password)
+        let user = await User.register(newUser, req.body.password);
         req.login(user, function(err) {
             if (err) {
                 return next(err)
             };
-            res.session.success = `Welcome to Surf Shop, ${user.username}!`;
+            req.session.success = `Welcome to Surf Shop, ${user.username}!`;
             res.redirect('/');
-        })
+        });
     },
 
     // GET /login
