@@ -10,6 +10,11 @@ module.exports = {
         res.render('index', { posts, mapBoxToken, title: 'Surf Shop - Home' });
     },
 
+    // GET /register
+    getRegister(req, res, next) {
+        res.render('register', { title: 'Register' });
+    },
+
     // POST /register
     async postRegister(req, res, next) {
         console.log('registering user');
@@ -22,6 +27,11 @@ module.exports = {
 
         await User.register(newUser, req.body.password)
           res.redirect('/');
+    },
+
+    // GET /login
+    getLogin(req, res, next) {
+        res.render('login', { title: 'Login' });
     },
 
     // POST /login
