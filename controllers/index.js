@@ -25,8 +25,14 @@ module.exports = {
             image: req.body.image
         });
 
-        await User.register(newUser, req.body.password)
-          res.redirect('/');
+        let user = await User.register(newUser, req.body.password)
+        req.login(user, function(err) {
+            if (err) {
+                return next(err)
+            };
+            res.session.success = `Welcome to Surf Shop, ${user.username}!`;
+            res.redirect('/');
+        })
     },
 
     // GET /login
