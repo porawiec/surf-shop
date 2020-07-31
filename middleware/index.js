@@ -19,5 +19,11 @@ module.exports = {
         // flash message and redirect to root route
         req.session.error = 'You do not have access to edit this Review.';
         return res.redirect('/');
+    },
+    isLoggedIn: (req, res, next) => {
+        if (req.isAuthenticated()) return next();
+        req.session.error = 'You need to be logged in to do that!';
+        req.session.redirectTo = req.originalUrl;
+        res.redirect('/login')
     }
 }
