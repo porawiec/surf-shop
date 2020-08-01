@@ -4,7 +4,7 @@
 <div>
     <label for="username">Username:</label>
     <!-- name must = username & name must = password in order for passport to work correctly -->
-    <input type="text" id="username" name="username" placeholder="username" required>
+    <input type="text" id="username" name="username" placeholder="username" value="<%= username %>" required>
 </div>
 <div>
     <label for="password">Password:</label>
@@ -12,7 +12,7 @@
 </div>
 <div>
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="email" required>
+    <input type="email" id="email" name="email" placeholder="email" value="<%= email %>" required>
 </div>
 <div>
     <label for="image">Image:</label>

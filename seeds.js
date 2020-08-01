@@ -17,7 +17,7 @@ async function seedPosts() {
 				coordinates: [cities[random1000].longitude, cities[random1000].latitude],
 			},
             author: {
-                '_id' : '5eec74a5df67b06cd5f6cd7d',
+                '_id' : '5f24ca03fcee1ad4337d9fb1',
                 'username' : 'paulo'
             }
 		}
