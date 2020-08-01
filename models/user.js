@@ -7,7 +7,7 @@ const Schema = mongoose.Schema
 // uses passport local strategy which requires username and password
 
 const UserSchema = new Schema({
-    email: String,
+    email: { type: String, unique: true, required: true },
     image: String
 })
 
