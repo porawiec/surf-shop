@@ -4,7 +4,7 @@
 
 <form action="/posts" method="POST" enctype="multipart/form-data">
     <div><input type="text" name="post[title]" placeholder="Title"></div>
-    <div><input type="text" name="post[price]" placeholder="Price"></div>
+    <div><input type="number" name="post[price]" placeholder="Price"></div>
     <div>
         <!-- name="images" is taken from posts router 'POST posts create /posts' -->
         <input type="file" accept="images/*" name="images" multiple /> 

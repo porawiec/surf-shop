@@ -4,6 +4,7 @@ const createError = require('http-errors');
 const express = require('express');
 const engine = require('ejs-mate');
 const path = require('path');
+// const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
@@ -25,7 +26,10 @@ const reviewsRouter = require('./routes/reviews');
 const app = express();
 
 //connect to the database
-mongoose.connect('mongodb://localhost:27017/surf-shop', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/surf-shop', { 
+  useNewUrlParser: true,
+  useCreateIndex: true
+});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -42,6 +46,7 @@ app.set('view engine', 'ejs');
 // set public assets directory
 app.use(express.static('public'));
 
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -63,7 +63,7 @@ module.exports = {
     },
 
     // Posts Edit
-    async postEdit(req, res, next) {
+    postEdit(req, res, next) {
         // let post = await Post.findById(req.params.id);
         res.render('posts/edit'
         // , { post }
