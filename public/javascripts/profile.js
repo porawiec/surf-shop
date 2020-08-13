@@ -35,4 +35,4 @@ form.addEventListener('submit', e => {
             navbar.parentNode.insertBefore(flashErrorH1, navbar.nextSibling);
         }
     }
-})
+});
