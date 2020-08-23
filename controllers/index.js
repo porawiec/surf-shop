@@ -101,14 +101,37 @@ module.exports = {
         res.redirect('/profile');
     },
 
-    // GET
+    // GET users/forgot
     getForgotPw(req, res, next) {
-
+        res.render('users/forgot');
     },
 
     // PUT
     async putForgotPw(req, res, next) {
+        const token = await crypto.randomBytes(20).toString('hex');
+        // const user = await User.findOne({ email: req.body.email })
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            req.session.error = 'No account with that email address exists.';
+            return res.redirect('/forgot-password');
+        }
+        user.resetPasswordToken = token;
+        // 1 hour in ms
+        user.resetPasswordExpires = Date.now() + 3600000
+        await user.save();
 
+        const msg = {
+            to: email,
+            from: 'Name of Person <your@email.com>',
+            subject: 'Surf Shop - Forgot Password / Reset',
+            text: `You are receieving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link or copy and paste it into your browser to complete the process: http://${req.headers.host}/reset/${token} If you did not request this, please ignore this email and your password will remain unchanged`,
+            // html: asdf
+        };
+        await sgMail.send(msg);
+
+        req.session.success = `An email has been sent to ${email} with further instructions`;
+        res.redirect('/forgot-password');
     },
 
     // GET
