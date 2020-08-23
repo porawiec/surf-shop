@@ -117,7 +117,7 @@ module.exports = {
             return res.redirect('/forgot-password');
         }
         user.resetPasswordToken = token;
-        // 1 hour in ms
+        // 1 hour = 3600000 ms
         user.resetPasswordExpires = Date.now() + 3600000
         await user.save();
 
@@ -125,7 +125,7 @@ module.exports = {
             to: email,
             from: 'Name of Person <your@email.com>',
             subject: 'Surf Shop - Forgot Password / Reset',
-            text: `You are receieving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link or copy and paste it into your browser to complete the process: http://${req.headers.host}/reset/${token} If you did not request this, please ignore this email and your password will remain unchanged`,
+            text: `You are receieving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link or copy and paste it into your browser to complete the process: http://${req.headers.host}/reset/${token} If you did not request this, please ignore this email and your password will remain unchanged.`,
             // html: asdf
         };
         await sgMail.send(msg);
@@ -136,11 +136,55 @@ module.exports = {
 
     // GET
     async getReset(req, res, next) {
+        const { token } = req.params;
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
 
+        if (!user) {
+            req.session.error = 'Password reset token is invalid or has expired';
+            return res.redirect('/forgot-password');
+        }
+
+        res.render('users/reset', { token });
     },
 
     // PUT 
     async putReset(req, res, next) {
+        const { token } = req.params;
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
 
+        if (!user) {
+            req.session.error = 'Password reset token is invalid or has expired';
+            return res.redirect('/forgot-password');
+        }
+
+        if (req.body.password === req.body.confirm) {
+            await user.setPassword(req.body.password);
+            user.resetPasswordToken = null;
+            user.resetPasswordExpires = null;
+            await user.save();
+
+            const login = util.promisify(req.login.bind(req));
+            await login(user);
+        } else {
+            req.session.error = 'Passwords do not match.';
+            return res.redirect(`/reset/${ token }`);
+        }
+
+        const msg = {
+            to: user.email,
+            from: 'Name of Person <your@email.com>',
+            subject: 'Surf Shop - Password Changed',
+            text: `Hello, This email is to confirm that the password for your account has just been changed. If you did not make this change, please hit reply and notify us at once.`,
+        };
+
+        await sgMail.send(msg);
+        req.session.success = 'Password has been successfully updated!'
+        res.redirect('/');
     }
 }
