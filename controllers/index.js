@@ -5,6 +5,9 @@ const mapBoxToken = process.env.MAPBOX_TOKEN;
 const util = require('util');
 const { cloudinary } = require('../cloudinary');
 const { deleteProfileImage } = require('../middleware');
+const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = {
     // GET /
@@ -96,5 +99,25 @@ module.exports = {
         await login(user);
         req.session.success = 'Profile successfully updated!';
         res.redirect('/profile');
+    },
+
+    // GET
+    getForgotPw(req, res, next) {
+
+    },
+
+    // PUT
+    async putForgotPw(req, res, next) {
+
+    },
+
+    // GET
+    async getReset(req, res, next) {
+
+    },
+
+    // PUT 
+    async putReset(req, res, next) {
+
     }
 }
